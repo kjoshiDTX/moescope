@@ -1,0 +1,50 @@
+{"id": 0, "category": "code", "prompt": "Write a Python function that checks whether a string is a palindrome."}
+{"id": 1, "category": "code", "prompt": "Explain the difference between a list and a tuple in Python."}
+{"id": 2, "category": "code", "prompt": "Write a SQL query that returns the top 5 customers by total order value."}
+{"id": 3, "category": "code", "prompt": "Implement binary search in Rust."}
+{"id": 4, "category": "code", "prompt": "What does the `yield` keyword do in Python? Give an example."}
+{"id": 5, "category": "code", "prompt": "Write a bash one-liner that counts lines in all .py files in a directory tree."}
+{"id": 6, "category": "code", "prompt": "Refactor this loop into a list comprehension: result = []; for x in nums: if x % 2 == 0: result.append(x * x)"}
+{"id": 7, "category": "code", "prompt": "Write a JavaScript debounce function."}
+{"id": 8, "category": "code", "prompt": "Explain what a race condition is and show a Go example that has one."}
+{"id": 9, "category": "code", "prompt": "Write a Python class for an LRU cache with get and put in O(1)."}
+{"id": 10, "category": "code", "prompt": "How do I reverse a linked list in C?"}
+{"id": 11, "category": "code", "prompt": "Write a regular expression that matches ISO 8601 dates like 2026-10-12."}
+{"id": 12, "category": "code", "prompt": "What is the time complexity of quicksort in the worst case, and why?"}
+{"id": 13, "category": "code", "prompt": "Write a TypeScript interface for a user with id, name, optional email, and a list of roles."}
+{"id": 14, "category": "code", "prompt": "Fix the bug: def avg(xs): return sum(xs) / len(xs) fails on empty lists."}
+{"id": 15, "category": "code", "prompt": "Write a Dockerfile for a small FastAPI app."}
+{"id": 16, "category": "code", "prompt": "Implement merge sort in Python."}
+{"id": 17, "category": "code", "prompt": "Explain Python's GIL in two paragraphs."}
+{"id": 18, "category": "code", "prompt": "Write a function that flattens an arbitrarily nested list in Python."}
+{"id": 19, "category": "code", "prompt": "How do I read a CSV file with pandas and drop rows with missing values?"}
+{"id": 20, "category": "code", "prompt": "Write a C++ function that returns the n-th Fibonacci number using memoization."}
+{"id": 21, "category": "code", "prompt": "What is the difference between `git rebase` and `git merge`?"}
+{"id": 22, "category": "code", "prompt": "Write a Python decorator that times a function call."}
+{"id": 23, "category": "code", "prompt": "Implement a stack using two queues in Java."}
+{"id": 24, "category": "code", "prompt": "Write a SQL query to find duplicate emails in a users table."}
+{"id": 25, "category": "code", "prompt": "Explain what Big-O notation measures, with three examples."}
+{"id": 26, "category": "code", "prompt": "Write a React component that shows a counter with increment and decrement buttons."}
+{"id": 27, "category": "code", "prompt": "Write a Python generator that yields prime numbers forever."}
+{"id": 28, "category": "code", "prompt": "How do I make an HTTP GET request in Go and parse JSON?"}
+{"id": 29, "category": "code", "prompt": "Write unit tests with pytest for a function add(a, b)."}
+{"id": 30, "category": "code", "prompt": "Explain the difference between processes and threads."}
+{"id": 31, "category": "code", "prompt": "Write a Rust function that counts word frequencies in a string."}
+{"id": 32, "category": "code", "prompt": "Implement depth-first search on an adjacency list in Python."}
+{"id": 33, "category": "code", "prompt": "What does `async`/`await` do in JavaScript?"}
+{"id": 34, "category": "code", "prompt": "Write a Makefile with build, test, and clean targets for a C project."}
+{"id": 35, "category": "code", "prompt": "Convert this callback code to use promises: fs.readFile(p, (err, data) => cb(err, data))"}
+{"id": 36, "category": "code", "prompt": "Write a function to validate a binary search tree in Python."}
+{"id": 37, "category": "code", "prompt": "How does a hash map handle collisions?"}
+{"id": 38, "category": "code", "prompt": "Write a PyTorch module for a two-layer MLP."}
+{"id": 39, "category": "code", "prompt": "Explain what a closure is in JavaScript with an example."}
+{"id": 40, "category": "code", "prompt": "Write a Python script that renames all .txt files in a folder to .md."}
+{"id": 41, "category": "code", "prompt": "Implement Dijkstra's algorithm using a heap in Python."}
+{"id": 42, "category": "code", "prompt": "Write a GitHub Actions workflow that runs pytest on push."}
+{"id": 43, "category": "code", "prompt": "What is dependency injection and why is it useful?"}
+{"id": 44, "category": "code", "prompt": "Write a function that merges two sorted arrays in Java."}
+{"id": 45, "category": "code", "prompt": "Explain the CAP theorem in simple terms."}
+{"id": 46, "category": "code", "prompt": "Write a Python context manager that changes the working directory temporarily."}
+{"id": 47, "category": "code", "prompt": "Write a Kotlin data class for a 2D point with a distance function."}
+{"id": 48, "category": "code", "prompt": "How do I profile a slow Python function?"}
+{"id": 49, "category": "code", "prompt": "Write a function that returns all permutations of a string in Python."}

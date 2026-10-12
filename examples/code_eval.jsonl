@@ -1,0 +1,20 @@
+{"id": 0, "category": "code", "prompt": "What is 7 * 8? Answer with just the number.", "answer": "56"}
+{"id": 1, "category": "code", "prompt": "In Python, what does len([1, 2, 3]) return? Answer with just the value.", "answer": "3"}
+{"id": 2, "category": "code", "prompt": "In Python, what is the value of 10 // 3? Answer with just the value.", "answer": "3"}
+{"id": 3, "category": "code", "prompt": "In Python, what does 'abc'.upper() return? Answer with just the value, without quotes.", "answer": "ABC"}
+{"id": 4, "category": "code", "prompt": "In Python, what is 2 ** 10? Answer with just the number.", "answer": "1024"}
+{"id": 5, "category": "code", "prompt": "Which Python keyword defines a function? Answer with one word.", "answer": "def"}
+{"id": 6, "category": "code", "prompt": "What is the boolean value of an empty list in Python? Answer with one word.", "answer": "False"}
+{"id": 7, "category": "code", "prompt": "In Python, what does sorted([3, 1, 2]) return? Answer with just the value.", "answer": "[1, 2, 3]"}
+{"id": 8, "category": "code", "prompt": "What is 15 + 27? Answer with just the number.", "answer": "42"}
+{"id": 9, "category": "code", "prompt": "In JavaScript, what does typeof 42 return? Answer with one word, without quotes.", "answer": "number"}
+{"id": 10, "category": "code", "prompt": "In Python, what is 'hello'[0]? Answer with just the character, without quotes.", "answer": "h"}
+{"id": 11, "category": "code", "prompt": "Which SQL keyword removes duplicate rows from a result? Answer with one word.", "answer": "DISTINCT"}
+{"id": 12, "category": "code", "prompt": "In Python, what does max(4, 9, 2) return? Answer with just the number.", "answer": "9"}
+{"id": 13, "category": "code", "prompt": "What is 100 - 37? Answer with just the number.", "answer": "63"}
+{"id": 14, "category": "code", "prompt": "In Python, what does 'a,b,c'.split(',') return? Answer with just the value.", "answer": "['a', 'b', 'c']"}
+{"id": 15, "category": "code", "prompt": "What is the hexadecimal representation of 255? Answer like 0x.., lowercase.", "answer": "0xff"}
+{"id": 16, "category": "code", "prompt": "In Python, what does abs(-12) return? Answer with just the number.", "answer": "12"}
+{"id": 17, "category": "code", "prompt": "Which Git command creates a new commit? Answer with the two-word command.", "answer": "git commit"}
+{"id": 18, "category": "code", "prompt": "In Python, what does list(range(3)) return? Answer with just the value.", "answer": "[0, 1, 2]"}
+{"id": 19, "category": "code", "prompt": "What is 9 squared? Answer with just the number.", "answer": "81"}

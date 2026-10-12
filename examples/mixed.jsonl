@@ -1,0 +1,40 @@
+{"id": 0, "category": "code", "prompt": "Write a Python function that checks whether a string is a palindrome."}
+{"id": 1, "category": "code", "prompt": "Explain the difference between a list and a tuple in Python."}
+{"id": 2, "category": "code", "prompt": "Write a SQL query that returns the top 5 customers by total order value."}
+{"id": 3, "category": "code", "prompt": "Implement binary search in Rust."}
+{"id": 4, "category": "code", "prompt": "What does the `yield` keyword do in Python? Give an example."}
+{"id": 5, "category": "code", "prompt": "Write a bash one-liner that counts lines in all .py files in a directory tree."}
+{"id": 6, "category": "code", "prompt": "Refactor this loop into a list comprehension: result = []; for x in nums: if x % 2 == 0: result.append(x * x)"}
+{"id": 7, "category": "code", "prompt": "Write a JavaScript debounce function."}
+{"id": 8, "category": "code", "prompt": "Explain what a race condition is and show a Go example that has one."}
+{"id": 9, "category": "code", "prompt": "Write a Python class for an LRU cache with get and put in O(1)."}
+{"id": 10, "category": "code", "prompt": "How do I reverse a linked list in C?"}
+{"id": 11, "category": "code", "prompt": "Write a regular expression that matches ISO 8601 dates like 2026-10-12."}
+{"id": 12, "category": "code", "prompt": "What is the time complexity of quicksort in the worst case, and why?"}
+{"id": 13, "category": "code", "prompt": "Write a TypeScript interface for a user with id, name, optional email, and a list of roles."}
+{"id": 14, "category": "code", "prompt": "Fix the bug: def avg(xs): return sum(xs) / len(xs) fails on empty lists."}
+{"id": 15, "category": "code", "prompt": "Write a Dockerfile for a small FastAPI app."}
+{"id": 16, "category": "code", "prompt": "Implement merge sort in Python."}
+{"id": 17, "category": "code", "prompt": "Explain Python's GIL in two paragraphs."}
+{"id": 18, "category": "code", "prompt": "Write a function that flattens an arbitrarily nested list in Python."}
+{"id": 19, "category": "code", "prompt": "How do I read a CSV file with pandas and drop rows with missing values?"}
+{"id": 20, "category": "chat", "prompt": "What are some good habits for getting better sleep?"}
+{"id": 21, "category": "chat", "prompt": "Can you suggest a three-day itinerary for Lisbon?"}
+{"id": 22, "category": "chat", "prompt": "How do I politely decline a meeting invitation?"}
+{"id": 23, "category": "chat", "prompt": "What's a good recipe for a quick vegetarian dinner?"}
+{"id": 24, "category": "chat", "prompt": "Tell me a short story about a lighthouse keeper and a fox."}
+{"id": 25, "category": "chat", "prompt": "How can I stay motivated while studying for exams?"}
+{"id": 26, "category": "chat", "prompt": "What are the health benefits of walking every day?"}
+{"id": 27, "category": "chat", "prompt": "Write a birthday message for my grandmother who is turning 90."}
+{"id": 28, "category": "chat", "prompt": "What should I pack for a weekend camping trip?"}
+{"id": 29, "category": "chat", "prompt": "How do I start learning to play the guitar?"}
+{"id": 30, "category": "chat", "prompt": "Give me tips for a successful job interview."}
+{"id": 31, "category": "chat", "prompt": "What is the difference between weather and climate?"}
+{"id": 32, "category": "chat", "prompt": "Can you recommend some classic novels for a beginner?"}
+{"id": 33, "category": "chat", "prompt": "How do I make my houseplants grow better?"}
+{"id": 34, "category": "chat", "prompt": "Write a haiku about autumn rain."}
+{"id": 35, "category": "chat", "prompt": "What are some fun things to do on a rainy day with kids?"}
+{"id": 36, "category": "chat", "prompt": "How can I save money on groceries?"}
+{"id": 37, "category": "chat", "prompt": "Explain why the sky is blue to a ten-year-old."}
+{"id": 38, "category": "chat", "prompt": "What are good conversation starters at a networking event?"}
+{"id": 39, "category": "chat", "prompt": "How do I deal with a difficult coworker?"}
