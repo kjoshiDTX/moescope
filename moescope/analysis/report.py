@@ -110,3 +110,9 @@ def render_compare(result: dict, console: Console) -> None:
             " ".join(f"{g['expert']}({g['delta']:.1%})" for g in layer["losers"][:3]),
         )
     console.print(table)
+    if result.get("agreement"):
+        notes = {"prefill": "identical input tokens", "decode": "generations can diverge, so not like-for-like",
+                 "all": "prefill and decode"}
+        for phase, a in result["agreement"].items():
+            console.print(f"Top-1 agreement, {phase} ({notes[phase]}): [bold]{a['top1']:.1%}[/] of {a['rows']:,} "
+                          f"token-layers · mean top-k overlap {a['topk_overlap']:.1%}")
