@@ -25,9 +25,9 @@ function Body({ results }) {
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      <div className="grid gap-3" style={{ gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))" }}>
         <StatTile label={`Full model (${p.metric})`} value={fmt.pct0(p.baseline.score)} note={`${p.baseline.n} eval examples`} />
-        {p.results.slice(-3).map((r) => (
+        {p.results.map((r) => (
           <StatTile key={r.keep_coverage} label={`Keep Cov@${r.keep_coverage}`} value={fmt.pct0(r.score)}
             note={`${fmt.pct0(r.masked_share)} of experts masked · ${fmt.bytes(r.masked_bytes)}`} />
         ))}
@@ -35,7 +35,7 @@ function Body({ results }) {
       <Card
         testid="view-prune"
         title="Quality vs experts masked"
-        subtitle={`Experts outside each coverage set are masked in the router (logits set to −∞), then the eval reruns. Masking shows potential savings; the weights are still loaded. ${best ? `Keeping Cov@${best.keep_coverage} masks ${fmt.pct0(best.masked_share)} with no score loss.` : ""}`}
+        subtitle={`Experts outside each coverage set are masked in the router (logits set to −∞), then the eval reruns. Masking shows potential savings; the weights are still loaded. ${best ? `Keeping Cov@${best.keep_coverage} masks ${fmt.pct0(best.masked_share)} and still scores at or above the full model on this eval (${p.baseline.n} examples, so small differences are noise).` : ""}`}
         actions={results.length > 1 && <Select label="Result" value={which} onChange={setWhich} options={results.map((r) => ({ value: r.name, label: r.name }))} />}
       >
         <TradeoffChart prune={p} />
