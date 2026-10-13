@@ -39,9 +39,11 @@ def profile(
     backend: Annotated[str, typer.Option(help="Capture backend")] = "hf",
     raw_prompts: Annotated[bool, typer.Option("--raw-prompts", help="Skip the tokenizer chat template")] = False,
     limit: Annotated[int | None, typer.Option(help="Only use the first N prompts")] = None,
+    tokenizer: Annotated[str | None, typer.Option(help="llamacpp only: tokenize with this HF tokenizer so tokens match an hf run")] = None,
 ):
     """Run the model on your prompts and record every router decision."""
     from .adapters.registry import UnsupportedModelError
+    from .backends.llamacpp import LlamaCppError
     from .prompts import load_prompts
     from .trace.schema import RunManifest, validate
     from .trace.writer import TraceWriter
@@ -60,14 +62,19 @@ def profile(
     elif backend == "llamacpp":
         from .backends.llamacpp import LlamaCppBackend
 
-        engine = LlamaCppBackend(max_new_tokens=max_new_tokens)
+        hf_tok = None
+        if tokenizer:
+            from transformers import AutoTokenizer
+
+            hf_tok = AutoTokenizer.from_pretrained(tokenizer)
+        engine = LlamaCppBackend(max_new_tokens=max_new_tokens, chat_template=not raw_prompts, tokenizer=hf_tok)
     else:
         fail(f"unknown backend {backend!r}; choose hf or llamacpp")
 
     with console.status(f"Loading {model} …"):
         try:
             info = engine.load(model)
-        except UnsupportedModelError as e:
+        except (UnsupportedModelError, LlamaCppError) as e:
             fail(str(e))
     if hasattr(engine, "self_test"):
         with console.status("Checking router hooks against the model's own router logits …"):
@@ -99,12 +106,17 @@ def profile(
     columns = [TextColumn("{task.description}"), BarColumn(), MofNCompleteColumn(), TextColumn("{task.fields[rate]}"), TimeElapsedColumn()]
     with TraceWriter(out) as writer, Progress(*columns, console=console) as progress:
         task = progress.add_task("prompts", total=len(prompt_list), rate="")
-        for p in prompt_list:
-            for event in engine.run([p]):
-                writer.write(event)
-                if event.layer == 0:
-                    tokens += len(event)
-            progress.update(task, advance=1, rate=f"{tokens / (time.perf_counter() - start):.1f} tok/s")
+        seen: set[int] = set()
+        for event in engine.run(prompt_list):
+            writer.write(event)
+            if event.prompt_id not in seen:  # a new prompt started, so the previous one finished
+                if seen:
+                    progress.update(task, advance=1)
+                seen.add(event.prompt_id)
+            if event.layer == 0:
+                tokens += len(event)
+                progress.update(task, rate=f"{tokens / (time.perf_counter() - start):.1f} tok/s")
+        progress.update(task, completed=len(prompt_list))
         writer.close(manifest)
 
     validate(out)
