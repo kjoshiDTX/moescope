@@ -224,5 +224,30 @@ def simulate(
     console.print(f"Wrote {run_dir / 'sim.json'}")
 
 
+@app.command()
+def ui(
+    runs_dir: Annotated[Path, typer.Argument(help="Folder of runs to serve")] = Path("runs"),
+    port: Annotated[int, typer.Option(help="Port on 127.0.0.1")] = 7878,
+    open_browser: Annotated[bool, typer.Option("--open/--no-open", help="Open a browser tab")] = True,
+):
+    """Open the local, read-only dashboard over a runs folder."""
+    import threading
+    import webbrowser
+
+    import uvicorn
+
+    from .server.api import STATIC, create_app
+
+    if not runs_dir.is_dir():
+        fail(f"{runs_dir} is not a directory")
+    if not (STATIC / "index.html").exists():
+        err.print("[yellow]Dashboard assets are missing; run `npm run build` in web/. Serving the API only.[/]")
+    url = f"http://127.0.0.1:{port}"
+    console.print(f"moescope dashboard on [bold]{url}[/] (serving {runs_dir.resolve()}) · Ctrl+C to stop")
+    if open_browser:
+        threading.Timer(1.0, webbrowser.open, args=[url]).start()
+    uvicorn.run(create_app(runs_dir), host="127.0.0.1", port=port, log_level="warning")
+
+
 if __name__ == "__main__":
     app()
