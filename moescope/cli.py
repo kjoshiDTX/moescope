@@ -301,6 +301,45 @@ def prune(
     console.print(f"Wrote {out / 'prune.json'}")
 
 
+@app.command("train-watch")
+def train_watch(
+    log_dir: Annotated[Path, typer.Argument(help="log_dir given to MoEWatchCallback")],
+):
+    """Summarize a MoEWatchCallback training log: losses, load balance, collapse warnings.
+
+    Add the callback in Python: Trainer(..., callbacks=[MoEWatchCallback(log_dir="runs/ft")])
+    """
+    import json
+
+    from rich.table import Table
+
+    log = log_dir / "train.jsonl"
+    if not log.exists():
+        fail(f"no train.jsonl in {log_dir}; add MoEWatchCallback(log_dir={str(log_dir)!r}) to your Trainer")
+    steps = [json.loads(line) for line in log.read_text().splitlines() if line.strip()]
+    meta_path = log_dir / "train_meta.json"
+    meta = json.loads(meta_path.read_text()) if meta_path.exists() else {}
+    if not steps:
+        fail(f"{log} has no logged steps yet")
+    console.print(f"[bold]{log_dir}[/] · {meta.get('model_id', '?')} · {len(steps)} logged steps, last step {steps[-1]['step']}")
+    table = Table(header_style="bold", box=None, pad_edge=False)
+    for col in ("step", "aux loss", "z-loss", "max load ratio", "worst layer", "collapsed"):
+        table.add_column(col, justify="right")
+    stride = max(1, len(steps) // 12)
+    for s in steps[::stride] + ([steps[-1]] if (len(steps) - 1) % stride else []):
+        worst = max(range(len(s["max_load_ratio"])), key=lambda l: s["max_load_ratio"][l])
+        table.add_row(str(s["step"]), f"{s['aux_loss']:.4f}", f"{s['z_loss']:.3f}",
+                      f"{s['max_load_ratio'][worst]:.2f}×", str(worst), ", ".join(map(str, s["collapsed_layers"])) or "–")
+    console.print(table)
+    collapsed = sorted({l for s in steps for l in s["collapsed_layers"]})
+    if collapsed:
+        first = {l: next(s["step"] for s in steps if l in s["collapsed_layers"]) for l in collapsed}
+        err.print(f"[bold red]Router collapse:[/] " + ", ".join(f"layer {l} from step {first[l]}" for l in collapsed)
+                  + f" (one expert above {meta.get('collapse_factor', 3)}× fair share for {meta.get('collapse_steps', 200)}+ steps)")
+    else:
+        console.print("No router collapse detected.")
+
+
 @app.command()
 def ui(
     runs_dir: Annotated[Path, typer.Argument(help="Folder of runs to serve")] = Path("runs"),
