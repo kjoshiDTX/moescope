@@ -225,6 +225,71 @@ def simulate(
 
 
 @app.command()
+def prune(
+    run_dir: Annotated[Path, typer.Argument(help="Run directory from `moescope profile`")],
+    eval_file: Annotated[Path, typer.Option("--eval", help="JSONL eval set with prompt and answer", exists=True, dir_okay=False)],
+    keep_coverage: Annotated[str, typer.Option(help="Comma-separated coverage levels to keep, e.g. 90,95,99")] = "99",
+    out: Annotated[Path | None, typer.Option(help="Output directory (default: <run>/prune)")] = None,
+    metric: Annotated[str, typer.Option(help="exact, contains, or module:function(prediction, reference)")] = "exact",
+    max_new_tokens: Annotated[int, typer.Option(help="Generation length per eval example")] = 32,
+    model: Annotated[str | None, typer.Option(help="Model to load (default: the run's model)")] = None,
+    device: Annotated[str | None, typer.Option(help="cuda, mps or cpu")] = None,
+    dtype: Annotated[str | None, typer.Option(help="Load dtype, e.g. bfloat16")] = None,
+    limit: Annotated[int | None, typer.Option(help="Only use the first N eval examples")] = None,
+):
+    """Mask experts outside each coverage set and re-run an eval. Writes prune.json."""
+    import json
+
+    from rich.table import Table
+
+    from .backends.hf import HFBackend
+    from .prompts import load_prompts
+    from .prune.evaluate import load_metric, prune_eval
+
+    run = _load(run_dir)
+    if run.manifest.backend != "hf" and model is None:
+        fail(f"run was captured with the {run.manifest.backend} backend; pass --model with the matching HF model")
+    coverages = _floats(keep_coverage, "--keep-coverage")
+    if not coverages or any(not 0 < c <= 100 for c in coverages):
+        fail("--keep-coverage values must be in (0, 100]")
+    try:
+        examples = load_prompts(eval_file)[:limit]
+        score = load_metric(metric)
+    except (ValueError, ImportError, AttributeError) as e:
+        fail(str(e))
+    missing = [ex.id for ex in examples if ex.answer is None]
+    if missing:
+        fail(f"eval examples need an 'answer' field; missing on ids {missing[:5]}")
+
+    backend = HFBackend(device=device, dtype=dtype)
+    with console.status(f"Loading {model or run.manifest.model_id} …"):
+        backend.load(model or run.manifest.model_id)
+    total = len(examples) * (len(coverages) + 1)
+    columns = [TextColumn("{task.description}"), BarColumn(), MofNCompleteColumn(), TimeElapsedColumn()]
+    with Progress(*columns, console=console) as progress:
+        task = progress.add_task("eval", total=total)
+        try:
+            result = prune_eval(backend, run, examples, sorted(coverages, reverse=True), score, max_new_tokens,
+                                progress=lambda key: progress.update(task, advance=1, description=f"eval ({key})"))
+        except ValueError as e:
+            fail(str(e))
+    result.update({"eval_file": str(eval_file), "metric": metric})
+
+    table = Table(header_style="bold", box=None, pad_edge=False)
+    for col in ("experts kept", "masked", "potential savings", metric):
+        table.add_column(col, justify="right")
+    table.add_row("all", "0%", "–", f"{result['baseline']['score']:.1%}")
+    for r in result["results"]:
+        table.add_row(f"Cov@{r['keep_coverage']:g}", f"{r['masked_share']:.1%}", f"{r['masked_bytes'] / 2**20:,.0f} MiB", f"{r['score']:.1%}")
+    console.print(table)
+    console.print("[dim]Masked experts stay loaded; savings are what a pruned checkpoint would free.[/]")
+    out = out or run_dir / "prune"
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "prune.json").write_text(json.dumps(result))
+    console.print(f"Wrote {out / 'prune.json'}")
+
+
+@app.command()
 def ui(
     runs_dir: Annotated[Path, typer.Argument(help="Folder of runs to serve")] = Path("runs"),
     port: Annotated[int, typer.Option(help="Port on 127.0.0.1")] = 7878,
